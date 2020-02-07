@@ -55,17 +55,26 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Navigation\ViewModelEnum.cs" />
     <Compile Include="Navigation\NavigationTemplateSelector.cs" />
     <Compile Include="Navigation\Navigator.cs" />
+    <Compile Include="ViewModel\Dashboard\AttendanceViewModel.cs" />
     <Compile Include="ViewModel\ClassViewModel.cs" />
     <Compile Include="ViewModel\DashboardViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\Dashboard\MarksViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Compile Include="View\ClassView.xaml.cs">
       <DependentUpon>ClassView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\DashboardView.xaml.cs">
       <DependentUpon>DashboardView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dashboard\AttendanceView.xaml.cs">
+      <DependentUpon>AttendanceView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Dashboard\MarksView.xaml.cs">
+      <DependentUpon>MarksView.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -88,6 +97,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="View\DashboardView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Dashboard\AttendanceView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Dashboard\MarksView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

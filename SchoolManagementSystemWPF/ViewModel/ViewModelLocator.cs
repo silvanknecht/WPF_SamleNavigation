@@ -14,6 +14,8 @@
 
 using CommonServiceLocator;
 using GalaSoft.MvvmLight.Ioc;
+using SchoolManagementSystemWPF.Navigation;
+using SchoolManagementSystemWPF.ViewModel.Dashboard;
 
 
 namespace SchoolManagementSystemWPF.ViewModel
@@ -45,15 +47,28 @@ namespace SchoolManagementSystemWPF.ViewModel
             SimpleIoc.Default.Register<MainViewModel>();
             SimpleIoc.Default.Register<DashboardViewModel>();
             SimpleIoc.Default.Register<ClassViewModel>();
+            SimpleIoc.Default.Register<MainNavigator>();
+            SimpleIoc.Default.Register<DashboardNavigator>();
+            SimpleIoc.Default.Register<MarksViewModel>();
+            SimpleIoc.Default.Register<AttendanceViewModel>();
+
         }
 
         public MainViewModel Main => ServiceLocator.Current.GetInstance<MainViewModel>();
         public DashboardViewModel Dashboard => ServiceLocator.Current.GetInstance<DashboardViewModel>();
         public ClassViewModel Class => ServiceLocator.Current.GetInstance<ClassViewModel>();
+        public MarksViewModel Marks => ServiceLocator.Current.GetInstance<MarksViewModel>();
+        public AttendanceViewModel Attendance => ServiceLocator.Current.GetInstance<AttendanceViewModel>();
 
         public static void Cleanup()
         {
-            // TODO Clear the ViewModels
+            SimpleIoc.Default.Unregister<MainViewModel>();
+            SimpleIoc.Default.Unregister<DashboardViewModel>();
+            SimpleIoc.Default.Unregister<ClassViewModel>();
+            SimpleIoc.Default.Unregister<MainNavigator>();
+            SimpleIoc.Default.Unregister<DashboardNavigator>();
+            SimpleIoc.Default.Unregister<MarksViewModel>();
+            SimpleIoc.Default.Unregister<AttendanceViewModel>();
         }
     }
 }

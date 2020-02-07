@@ -4,10 +4,50 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:SchoolManagementSystemWPF.View"
+             xmlns:navigation="clr-namespace:SchoolManagementSystemWPF.Navigation"
+             xmlns:dashboard="clr-namespace:SchoolManagementSystemWPF.ViewModel.Dashboard"
+             xmlns:dashboard1="clr-namespace:SchoolManagementSystemWPF.View.Dashboard"
+
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800"
              DataContext="{Binding Dashboard, Source={StaticResource Locator }}">
+
+    <UserControl.Resources>
+        <Style TargetType="Button">
+            <Setter Property="Padding" Value="10 5 10 5" />
+        </Style>
+        <ResourceDictionary x:Key="ResourceDictionary" Source="/Resources/MainNavigationBindings.xaml"/>
+
+        <DataTemplate x:Key="MarksTemplate" DataType="{x:Type dashboard:MarksViewModel}">
+            <dashboard1:MarksView Background="{Binding BackgroundColor}"/>
+        </DataTemplate>
+
+        <DataTemplate x:Key="AttendanceTemplate" DataType="{x:Type dashboard:AttendanceViewModel}">
+            <dashboard1:AttendanceView Background="{Binding BackgroundColor}"/>
+        </DataTemplate>
+
+        <navigation:NavigationTemplateSelector x:Key="NumberTemplateSelector"
+                                               MarksTemplate="{StaticResource MarksTemplate}"
+                                               AttendanceTemplate="{StaticResource AttendanceTemplate}"/>
+    </UserControl.Resources>
     <Grid>
-        <TextBlock Text="HAllooooo"></TextBlock>
+
+        <DockPanel Margin="20 0 20 10" LastChildFill="True">
+            <ItemsControl DockPanel.Dock="Top" ItemsSource="{Binding NavElements}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel  FlowDirection="RightToLeft" Orientation="Horizontal"></StackPanel>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Content}" Command="{Binding Command}" CommandParameter="{Binding CommandParameter}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+
+            <ContentPresenter Margin="0 10 0 0"  DockPanel.Dock="Bottom" Content="{Binding CurrentVm}" ContentTemplateSelector="{StaticResource NumberTemplateSelector}" />
+        </DockPanel>
+
     </Grid>
 </UserControl>

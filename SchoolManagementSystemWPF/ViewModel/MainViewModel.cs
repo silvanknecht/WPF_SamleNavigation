@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Windows.Controls;
 using System.Windows.Input;
 using GalaSoft.MvvmLight;
@@ -15,11 +11,9 @@ namespace SchoolManagementSystemWPF.ViewModel
 {
     public class MainViewModel : ViewModelBase
     {
-
-        public ICommand NavigateTo { get; }
+        private readonly MainNavigator _mainNavigator;
 
         private ViewModelBase _currentVm;
-
         public ViewModelBase CurrentVm
         {
             get => _currentVm;
@@ -31,30 +25,25 @@ namespace SchoolManagementSystemWPF.ViewModel
             }
         }
 
-        private readonly Dictionary<string, ViewModelBase> _mainNavigationViews = new Dictionary<string, ViewModelBase>()
+        public ICollection<Button> NavElements { get; }
+        public ICommand NavigateBack { get; }
+
+        public MainViewModel(MainNavigator mainNavigator)
         {
-            {"Dashboard", new DashboardViewModel()},
-            {"Class", new ClassViewModel()}
-        };
+            _mainNavigator = mainNavigator;
+            NavElements = _mainNavigator.NavElements;
 
-        private Navigator _navigator;
+            _mainNavigator.Navigating += Navigator_Navigating;
+            _mainNavigator.NavigateTo(ViewModelEnum.Class);
 
-        public MainViewModel()
-        {
-            _navigator = new Navigator();
-            _navigator.Navigating += Navigator_Navigating;
-
-
-            _navigator.StartNavigationAt(_mainNavigationViews["Dashboard"]);
-
-            NavigateTo = new RelayCommand<string>((s => _navigator.NavigatTo(_mainNavigationViews[s])));
+            NavigateBack = new RelayCommand((() => _mainNavigator.NavigateBack()));
         }
 
         private void Navigator_Navigating(object sender, ViewModelBase e)
         {
-            CurrentVm = e;
+            if (sender == _mainNavigator)
+                CurrentVm = e;
         }
     }
-
 }
 

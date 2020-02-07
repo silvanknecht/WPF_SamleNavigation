@@ -15,6 +15,8 @@
         <Style TargetType="Button">
             <Setter Property="Padding" Value="10 5 10 5" />
         </Style>
+
+
         <ResourceDictionary x:Key="ResourceDictionary" Source="Resources/MainNavigationBindings.xaml"/>
 
         <DataTemplate x:Key="ClassTemplate" DataType="{x:Type viewModel:ClassViewModel}">
@@ -22,7 +24,7 @@
         </DataTemplate>
 
         <DataTemplate x:Key="DashboardTemplate" DataType="{x:Type viewModel:DashboardViewModel}">
-            <view:DashboardView/>
+            <view:DashboardView Background="{Binding BackgroundColor}"/>
         </DataTemplate>
 
         <navigation:NavigationTemplateSelector x:Key="NumberTemplateSelector"
@@ -30,25 +32,26 @@
                                           ClassTemplate="{StaticResource ClassTemplate}"/>
     </Window.Resources>
 
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="*"></ColumnDefinition>
-        </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="auto"></RowDefinition>
-            <RowDefinition Height="*"></RowDefinition>
-        </Grid.RowDefinitions>
+    <DockPanel>
+        <DockPanel Margin="20 0 20 0" DockPanel.Dock="Top" LastChildFill="False">
+            <ItemsControl DockPanel.Dock="Right" ItemsSource="{Binding NavElements}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel  FlowDirection="RightToLeft" Orientation="Horizontal"></StackPanel>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <Button Content="{Binding Content}" Command="{Binding Command}" CommandParameter="{Binding CommandParameter}"/>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Button DockPanel.Dock="Left"  Content="Back" Command="{Binding NavigateBack}"></Button>
+        </DockPanel>
 
-        <!--Navigation-->
-        <Button Grid.Column="0" Grid.Row="0" Content="Dashboard" Command="{Binding NavigateTo}" CommandParameter=""/>
-        <Button Grid.Column="0" Grid.Row="1" Content="Class" Command="{Binding NavigateTo}" CommandParameter="Class"/>
-        <Button Grid.Column="0" Grid.Row="2" Content="Manage" Command="{Binding NavigateTo}" CommandParameter="Manage"/>
 
+        <ContentPresenter Margin="20 10 20 20" DockPanel.Dock="Bottom" Content="{Binding CurrentVm}" ContentTemplateSelector="{StaticResource NumberTemplateSelector}" />
+    </DockPanel>
 
-        <ContentPresenter Grid.Column="1" Grid.Row="0" Grid.RowSpan="3" Content="{Binding CurrentVm}" ContentTemplateSelector="{StaticResource NumberTemplateSelector}" />
-    </Grid>
 </Window>
